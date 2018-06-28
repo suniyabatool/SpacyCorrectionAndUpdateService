@@ -3,11 +3,9 @@ import {FormControl, FormGroup} from "@angular/forms";
 import * as _ from "underscore";
 import * as $ from "jquery";
 
-//import * as $ from 'jquery/dist/jquery.min.js';
-
 @Injectable()
 export class AppUtils {
-  
+
   public static getError(response): string {
     let errorMessage = "Please try again!";
     if (!AppUtils.isUndefinedOrNull(response) && !AppUtils.isUndefinedOrNull(response.message)) {
@@ -16,7 +14,7 @@ export class AppUtils {
         errorMessage = response['sub-message'] + ". " + errorMessage;
       }
     }
-    
+
     return errorMessage;
   }
 
@@ -45,7 +43,7 @@ export class AppUtils {
       to.push(from[i]);
     }
   }
-  
+
   public static copyDataInForm(data, form) {
     Object.keys(data).forEach(name => {
       if (form.controls[name]) {
@@ -53,7 +51,7 @@ export class AppUtils {
       }
     });
   }
-  
+
   public static enableForm(group: FormGroup, enable:boolean) {
     for (const i in group.controls) {
       if(enable) {
@@ -63,7 +61,7 @@ export class AppUtils {
       }
     }
   }
-  
+
   public static copyObjectFields(newObject, oldObject) {
     Object.keys(newObject).forEach(name => {
       if (oldObject[name] || oldObject[name] == null) {
@@ -86,21 +84,21 @@ export class AppUtils {
 
     return exists;
   }
-  
+
   public static convertBytesInMB(sizeInBytes: number): number {
     return ((sizeInBytes / 1024) / 1024);
   }
-  
+
   public static addAlphabaticsChars(charArray) {
     for (let i = 65; i <= 90; i++) {
       charArray.push(String.fromCharCode(i));
     }
   }
-  
+
   public static convertArrayIntoString(array: string[]) : string {
     let str = "";
     const delimeter = ", ";
-    
+
     for (let i = 0; i < array.length; i++) {
       if(i === (array.length - 1)) {
         str += array[i]
@@ -108,10 +106,10 @@ export class AppUtils {
         str += array[i] + delimeter;
       }
     }
-    
+
     return str;
   }
-  
+
   public static scrollToElement(element: string, delay: number = 50) {
     setTimeout(() => {
       $('html, body').animate({
@@ -119,7 +117,7 @@ export class AppUtils {
       }, 500);
     }, delay);
   }
-  
+
   public static getFileExtension(fileName: string) : string {
     return "." + fileName.split('.').pop();
   }
