@@ -1,0 +1,6 @@
+<div class="container-fluid mt-5 justify-content-center d-flex">
+  <div>
+    <input type="file" id="myFile" placeholder="Upload training file" (change)="fileChange($event)" accept=".csv, .xls, .xlsx">
+    <button class="btn btn-primary" (click)="classify()">Classify</button>
+  </div>
+</div>

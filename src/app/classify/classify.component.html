@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row mt-5">
+    <button class="btn btn-primary mr-5" (click)="train()">Train Model</button>
+    <input type="file" id="myFile" placeholder="Upload training file" (change)="fileChange($event)" accept=".csv, .xls, .xlsx" class="ml-5">
+    <button class="btn btn-primary" (click)="classify()">Classify</button>
+  </div>
+  <div class="row mt-5">
+    <div class="col-8 separator pt-4">
+      <div class="row mb-4" *ngFor="let entity of entitiesForDisplay; let e = index">
+        <div class="col-9">
+          <!-- <div class="d-flex justify-content-start">
+            <div *ngFor="let part of entity.parts">{{part.text}}</div>
+          </div> -->
+          <span *ngFor="let part of entity.parts; let p = index">
+            <span *ngIf="part.type !== 'plain'" class="entity p-3">{{part.text}}
+              <span class="p-1">{{part.type}}
+                <i class="fa fa-times cross p-1" (click)="removeEntity(e,p)"></i>
+                <!-- <i class="fa fa-check tick p-1"></i> -->
+              </span>
+            </span>
+            <span *ngIf="part.type === 'plain'" (mouseup)="captureHighlightedText(e,p)">{{part.text}}</span></span>
+        </div>
+        <div class="col-3">
+          <div class="classify-button d-flex justify-content-center mt-2">
+            <div class="mr-2">CLASSIFY</div>
+            <div><i class="fa fa-caret-down"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4 pt-5 pl-4">
+      <div class="train">
+        <div class="train-heading">TRAIN</div>
+        <form [formGroup]="trainForm" (submit)="addEntity()">
+          <div class="container-fluid mt-3">
+            <div class="form-group text-center">
+              <mat-form-field>
+                <input matInput placeholder="Entity Data" formControlName="highlightedText"/>
+              </mat-form-field>
+            </div>
+            <div class="form-group text-center">
+              <mat-form-field>
+                <input matInput placeholder="Entity Name" formControlName="entityName"/>
+                <mat-error *ngIf="trainForm.controls.entityName | isvalid: ['required']">Please enter an entity.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-group pb-3">
+              <button class="btn btn-primary correct-btn" type="submit">CORRECT</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

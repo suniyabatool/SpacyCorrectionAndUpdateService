@@ -1,0 +1,53 @@
+div {
+  color: #7b7b7b;
+  line-height: 3.5;
+}
+
+.classify-button {
+  font-size: small;
+  font-weight: 600;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.separator {
+  border-right: solid;
+  border-color: #fa7e2a;
+}
+
+.entity {
+  background-color: #a0e1fe;
+  border-radius: 5px;
+  white-space: pre;
+}
+
+.entity span {
+  background-color: #74d4fc;
+  border-radius: 5px;
+}
+
+.cross {
+  color: white;
+  background-color: #fd433a;
+}
+
+.tick {
+  color: white;
+  background-color: #28b62c;
+}
+
+.train {
+  background: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
+}
+
+.train-heading {
+  color: black;
+  font-weight: 600;
+  border-bottom: solid white;
+  text-align: center;
+}
+
+.correct-btn {
+  background-color: #fdb626;
+  border-color: #fdb626;
+}
