@@ -1,5 +1,4 @@
 import {MultipartItem} from "./multipart-item";
-import {AuthService} from "../../service/auth.service";
 export class MultipartUploader {
   public url;
   public authToken;
@@ -76,10 +75,6 @@ export class MultipartUploader {
 
     xhr.open(item.method, this.url, true);
     xhr.withCredentials = item.withCredentials;
-
-    if (AuthService.isAuthenticated()) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + AuthService.getToken());
-    }
 
     xhr.send(item.formData);
     this._render();

@@ -1,6 +1,5 @@
 import {MultipartUploader} from "./multipart-uploader";
-import {AppUtils} from "../../utils/app.util";
-import {AuthService} from "../../service/auth.service";
+import {AppUtils} from "../utils/app.util";
 
 export class MultipartItem {
   public alias = 'file';
@@ -50,19 +49,10 @@ export class MultipartItem {
   }
 
   public onSuccess(response:any, status:any, headers:any) {
-    const token = headers['x_auth_token'] !== null ? headers['x_auth_token'] : headers['X_AUTH_TOKEN'];
-    if(!AppUtils.isUndefinedOrNull(token)) {
-      AuthService.updateToken(token);
-    }
   }
 
   public onError(response:any, status:any, headers:any) {
-    if(status === 401) {
-      AuthService.logout();
-      return;
-    }
-
-    if(response) {
+    if (response) {
       response = JSON.parse(response);
     }
     this.callback(response, status);
