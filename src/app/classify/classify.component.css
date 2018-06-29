@@ -36,8 +36,19 @@ div {
   background-color: #28b62c;
 }
 
+.train-btn {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.btn-primary {
+  background-color: #fdb626;
+  border-color: #fdb626;
+}
+
 .train {
   background: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
+  border: solid 1px #dedede;
 }
 
 .train-heading {
@@ -50,4 +61,52 @@ div {
 .correct-btn {
   background-color: #fdb626;
   border-color: #fdb626;
+}
+
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+  max-width: 80%;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  padding-left: 0.25rem;
+}
+
+.no-js .inputfile + label {
+  display: none;
+}
+
+.inputfile:focus + label,
+.inputfile.has-focus + label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+.inputfile + label svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  fill: currentColor;
+  margin-top: -0.25em;
+  margin-right: 0.25em;
+}
+
+.input-file + label {
+  color: #d3394c;
+}
+
+.input-file:focus + label,
+.input-file.has-focus + label,
+.input-file + label:hover {
+  color: #722040;
 }

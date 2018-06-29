@@ -1,3 +1,8 @@
+import { constants } from './../app.constants';
+import { environment } from './../../environments/environment';
+import { AppUtils } from './../shared/utils/app.util';
+import { MultipartItem } from './../shared/multipart-upload/multipart-item';
+import { MultipartUploader } from './../shared/multipart-upload/multipart-uploader';
 import { Component, OnInit } from '@angular/core';
 import { isUndefined } from 'util';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
@@ -15,6 +20,14 @@ export class ClassifyComponent implements OnInit {
   trainingFile: File;
   loading: Subscription;
   formData: FormData = new FormData();
+
+  onFileUpload: () => void;
+  uploadCallback: (data, status) => void;
+  error = '';
+  isFileUploading = false;
+
+  uploader: MultipartUploader;
+  multipartItem: MultipartItem;
 
   entitiesFromModel = [
     {
@@ -82,7 +95,26 @@ export class ClassifyComponent implements OnInit {
   selectedSentencePartIndex;
   suggestedEntity = '';
 
-  constructor(private trainAndClassify: TrainAndClassify) { }
+  constructor(private trainAndClassify: TrainAndClassify) {
+
+    let webserviceUrl = environment.apiBaseUrl + constants.apiUrl.classify;
+    this.uploader = new MultipartUploader({url: webserviceUrl});
+    this.multipartItem = new MultipartItem(this.uploader);
+    this.multipartItem.formData = new FormData();
+
+    this.uploadCallback = (data, status) => {
+      this.fileUploadCallback(data, status);
+    };
+
+    this.onFileUpload = () => {
+      this.clearError();
+      this.isFileUploading = true;
+      this.multipartItem.formData.append('file', this.trainingFile);
+
+      this.multipartItem.callback = this.uploadCallback;
+      this.multipartItem.upload();
+    };
+  }
 
   ngOnInit() {
     this.initForm();
@@ -98,13 +130,27 @@ export class ClassifyComponent implements OnInit {
     this.trainForm.controls.highlightedText.disable();
   }
 
-  fileChange(event) {
-    let fileList: FileList = event.target.files;
+  fileUploadCallback(file, status) {
+    this.isFileUploading = false;
 
-    if(fileList.length > 0) {
-      this.trainingFile = fileList[0];
-      this.formData.append('file', this.trainingFile);
+    if (!AppUtils.isUndefinedOrNull(file) && !AppUtils.isUndefinedOrNull(file.data)) {
+      this.trainingFile = null;
+    } else {
+      this.error = 'Fail to upload';
     }
+  }
+
+  onSelectFile($event): void {
+    const inputValue = $event.target;
+    if (null == inputValue || null == inputValue.files[0]) {
+      return;
+    } else {
+      this.trainingFile = inputValue.files[0];
+    }
+  }
+
+  clearError() {
+    this.error = '';
   }
 
   train() {
@@ -113,16 +159,6 @@ export class ClassifyComponent implements OnInit {
     }, (error: any) => {
       console.log('error: ' + error);
     });
-  }
-
-  classify() {
-    /*this.loading = this.trainAndClassify.classify(this.formData).subscribe((data) => {
-      console.log('data: ' + data);
-    }, (error: any) => {
-      console.log('error: ' + error);
-    });*/
-
-    let fileUploader = new FileUploader(this.trainingFile);
   }
 
   reconstructEntitiesForDisplay() {
@@ -175,6 +211,10 @@ export class ClassifyComponent implements OnInit {
         this.highlightedTextOffset = window.getSelection().baseOffset < window.getSelection().focusOffset ? window.getSelection().baseOffset : window.getSelection().focusOffset;
         this.selectedSentenceIndex = e;
         this.selectedSentencePartIndex = p;
+      } else {
+        this.highlightedText = '';
+        this.suggestedEntity = '';
+        this.trainForm.reset();
       }
     }
   }
@@ -275,11 +315,6 @@ export class ClassifyComponent implements OnInit {
     this.highlightedText = '';
     this.suggestedEntity = '';
     this.trainForm.reset();
-    this.trainForm.controls.highlightedText.markAsPristine();
-    this.trainForm.markAsUntouched();
-    this.trainForm.controls.highlightedText.markAsUntouched();
-    this.trainForm.controls.highlightedText.setErrors(null);
-    this.trainForm.controls.highlightedText.updateValueAndValidity();
   }
 
 }
