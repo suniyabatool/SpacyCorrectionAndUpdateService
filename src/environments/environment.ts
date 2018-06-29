@@ -6,6 +6,6 @@
 export const environment = {
   production: false,
 
-  apiBaseUrl: 'http://192.168.56.1:3500/api',
+  apiBaseUrl: 'http://localhost:3500/api',
 
 };

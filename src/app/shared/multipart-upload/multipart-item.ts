@@ -1,5 +1,4 @@
-import {MultipartUploader} from "./multipart-uploader";
-import {AppUtils} from "../utils/app.util";
+import {MultipartUploader} from './multipart-uploader';
 
 export class MultipartItem {
   public alias = 'file';
@@ -16,14 +15,14 @@ export class MultipartItem {
   public isError = false;
   public progress = 0;
   public index = null;
-  public callback:Function = null;
+  public callback: Function = null;
 
-  constructor(private uploader:MultipartUploader) {
+  constructor(private uploader: MultipartUploader) {
   }
 
   public upload() {
     try {
-      console.debug("multipart-item.ts & upload() ==>.");
+      console.debug('multipart-item.ts & upload() ==>.');
       this.uploader.uploadItem(this);
     } catch (e) {
       console.error(e);
@@ -45,10 +44,10 @@ export class MultipartItem {
   public onBeforeUpload() {
   }
 
-  public onProgress(progress:number) {
+  public onProgress(progress: number) {
   }
 
-  public onSuccess(response:any, status:any, headers:any) {
+  public onSuccess(response: any, status: any, headers: any) {
   }
 
   public onError(response:any, status:any, headers:any) {
@@ -58,10 +57,10 @@ export class MultipartItem {
     this.callback(response, status);
   }
 
-  public onCancel(response:any, status:any, headers:any) {
+  public onCancel(response: any, status: any, headers: any) {
   }
 
-  public onComplete(response:any, status:any, headers:any) {
+  public onComplete(response: any, status: any, headers: any) {
 
     if(status !== 400 && status !== 401) {
       this.callback(JSON.parse(response), status);

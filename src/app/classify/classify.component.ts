@@ -3,6 +3,7 @@ import { isUndefined } from 'util';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from "rxjs/Rx";
 import {TrainAndClassify} from '../shared/services/trainandclassify.service';
+import {FileUploader} from "../shared/multipart-upload/FileUploader";
 
 @Component({
   selector: 'app-classify',
@@ -115,11 +116,13 @@ export class ClassifyComponent implements OnInit {
   }
 
   classify() {
-    this.loading = this.trainAndClassify.classify(this.formData).subscribe((data) => {
+    /*this.loading = this.trainAndClassify.classify(this.formData).subscribe((data) => {
       console.log('data: ' + data);
     }, (error: any) => {
       console.log('error: ' + error);
-    });
+    });*/
+
+    let fileUploader = new FileUploader(this.trainingFile);
   }
 
   reconstructEntitiesForDisplay() {
