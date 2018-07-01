@@ -34,7 +34,7 @@ export class TrainAndClassify {
 
   update(entitiesFromModel) {
     const url = constants.apiUrl.update;
-    return this.http.post(url, {data: entitiesFromModel})
+    return this.http.post(url, {'training_data': entitiesFromModel})
       .map((response: any) => {
         return response.data;
       })

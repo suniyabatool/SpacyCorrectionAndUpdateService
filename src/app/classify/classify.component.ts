@@ -8,7 +8,6 @@ import { isUndefined } from 'util';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from "rxjs/Rx";
 import {TrainAndClassify} from '../shared/services/trainandclassify.service';
-import {FileUploader} from "../shared/multipart-upload/FileUploader";
 
 @Component({
   selector: 'app-classify',
@@ -89,6 +88,7 @@ export class ClassifyComponent implements OnInit {
 
   trainForm: FormGroup;
   entitiesForDisplay = [];
+  entitiesToUpdate = [];
   highlightedText = '';
   highlightedTextOffset;
   selectedSentenceIndex;
@@ -130,13 +130,15 @@ export class ClassifyComponent implements OnInit {
     this.trainForm.controls.highlightedText.disable();
   }
 
-  fileUploadCallback(file, status) {
+  fileUploadCallback(fileData, status) {
     this.isFileUploading = false;
 
-    if (!AppUtils.isUndefinedOrNull(file) && !AppUtils.isUndefinedOrNull(file.data)) {
+    if (!AppUtils.isUndefinedOrNull(fileData) && !AppUtils.isUndefinedOrNull(fileData)) {
       this.trainingFile = null;
+      this.entitiesFromModel = fileData;
+      this.reconstructEntitiesForDisplay();
     } else {
-      this.error = 'Fail to upload';
+     this.error = 'Fail to upload';
     }
   }
 
@@ -162,6 +164,8 @@ export class ClassifyComponent implements OnInit {
   }
 
   reconstructEntitiesForDisplay() {
+    this.entitiesForDisplay = [];
+
     for (let i = 0; i < this.entitiesFromModel.length; i++) {
       const sentence = this.entitiesFromModel[i].sentence;
       let entityForDisplay = {};
@@ -315,6 +319,42 @@ export class ClassifyComponent implements OnInit {
     this.highlightedText = '';
     this.suggestedEntity = '';
     this.trainForm.reset();
+  }
+
+  reconstructEntityModel() {
+    for (let i = 0; i < this.entitiesForDisplay.length; i++) {
+      let entityModel = {};
+      let entities = [];
+      let entityForDisplay = this.entitiesForDisplay[i];
+      let startIndex = 0;
+      let endIndex = 0;
+      entityModel['sentence'] = entityForDisplay['sentence'];
+
+      for (let j = 0; j < entityForDisplay['parts'].length; j++) {
+        endIndex = startIndex + entityForDisplay['parts'][j]['text'].length;
+        if (entityForDisplay['parts'][j]['type'] !== 'plain') {
+          let entity = {};
+          entity['entity_text'] = entityForDisplay['parts'][j]['text'];
+          entity['entity_start'] = startIndex;
+          entity['entity_end'] = endIndex;
+          entity['entity_type'] = entityForDisplay['parts'][j]['type'];
+          entities.push(entity);
+        }
+        startIndex = endIndex;
+      }
+      entityModel['entities'] = entities;
+      this.entitiesToUpdate.push(entityModel);
+    }
+  }
+
+  update() {
+    this.reconstructEntityModel();
+
+    this.loading = this.trainAndClassify.update(this.entitiesToUpdate).subscribe((data) => {
+      console.log('data: ' + data);
+    }, (error: any) => {
+      console.log('error: ' + error);
+    });
   }
 
 }
