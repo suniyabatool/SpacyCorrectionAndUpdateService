@@ -167,27 +167,27 @@ export class ClassifyComponent implements OnInit {
     this.entitiesForDisplay = [];
 
     for (let i = 0; i < this.entitiesFromModel.length; i++) {
-      const sentence = this.entitiesFromModel[i].sentence;
+      const sentence = this.entitiesFromModel[i]['sentence'];
       let entityForDisplay = {};
       let sentenceParts = [];
       let startIndex = 0;
-      for (let j = 0; j < this.entitiesFromModel[i].entities.length; j++) {
-        const entityFromModel = this.entitiesFromModel[i].entities[j];
-        if (startIndex !== entityFromModel.entity_start) {
+      for (let j = 0; j < this.entitiesFromModel[i]['entities'].length; j++) {
+        const entityFromModel = this.entitiesFromModel[i]['entities'][j];
+        if (startIndex !== entityFromModel['entity_start']) {
           let sentencePart = {};
-          sentencePart['text'] = sentence.substring(startIndex, entityFromModel.entity_start);
+          sentencePart['text'] = sentence.substring(startIndex, entityFromModel['entity_start']);
           sentencePart['type'] = 'plain';
-          startIndex = entityFromModel.entity_start;
+          startIndex = entityFromModel['entity_start'];
           sentenceParts.push(sentencePart);
         }
-        if (startIndex === entityFromModel.entity_start) {
+        if (startIndex === entityFromModel['entity_start']) {
           let sentencePart = {};
-          sentencePart['text'] = entityFromModel.entity_text;
-          sentencePart['type'] = entityFromModel.entity_type;
-          startIndex = entityFromModel.entity_end;
+          sentencePart['text'] = entityFromModel['entity_text'];
+          sentencePart['type'] = entityFromModel['entity_type'];
+          startIndex = entityFromModel['entity_end'];
           sentenceParts.push(sentencePart);
         }
-        if (j === this.entitiesFromModel[i].entities.length - 1 && startIndex < sentence.length) {
+        if (j === this.entitiesFromModel[i]['entities'].length - 1 && startIndex < sentence.length) {
           let sentencePart = {};
           sentencePart['text'] = sentence.substring(startIndex, sentence.length);
           sentencePart['type'] = 'plain';
