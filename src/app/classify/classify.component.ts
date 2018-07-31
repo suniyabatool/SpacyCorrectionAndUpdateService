@@ -216,7 +216,7 @@ export class ClassifyComponent implements OnInit {
       this.highlightedText = window.getSelection().toString();
       this.trainForm.controls.highlightedText.setValue(this.highlightedText);
       if (this.highlightedText.length > 0) {
-        this.highlightedTextOffset = window.getSelection().baseOffset < window.getSelection().focusOffset ? window.getSelection().baseOffset : window.getSelection().focusOffset;
+        this.highlightedTextOffset = window.getSelection().anchorOffset < window.getSelection().focusOffset ? window.getSelection().anchorOffset : window.getSelection().focusOffset;
         this.selectedSentenceIndex = e;
         this.selectedSentencePartIndex = p;
       } else {
