@@ -29,4 +29,7 @@ export const constants = {
     cacheControl: 'Cache-Control',
     pragma: 'Pragma'
   },
+  events: {
+    showLoader: 'showLoader'
+  },
 };

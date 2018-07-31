@@ -1,13 +1,14 @@
-import { constants } from './../app.constants';
-import { environment } from './../../environments/environment';
-import { AppUtils } from './../shared/utils/app.util';
-import { MultipartItem } from './../shared/multipart-upload/multipart-item';
-import { MultipartUploader } from './../shared/multipart-upload/multipart-uploader';
-import { Component, OnInit } from '@angular/core';
-import { isUndefined } from 'util';
+import {constants} from './../app.constants';
+import {environment} from './../../environments/environment';
+import {AppUtils} from './../shared/utils/app.util';
+import {MultipartItem} from './../shared/multipart-upload/multipart-item';
+import {MultipartUploader} from './../shared/multipart-upload/multipart-uploader';
+import {Component, OnInit} from '@angular/core';
+import {isUndefined} from 'util';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from "rxjs/Rx";
+import {Subscription} from 'rxjs/Rx';
 import {TrainAndClassify} from '../shared/services/trainandclassify.service';
+import { EmitterUtil } from '../shared/utils/emitter.util';
 
 @Component({
   selector: 'app-classify',
@@ -103,16 +104,19 @@ export class ClassifyComponent implements OnInit {
     this.multipartItem.formData = new FormData();
 
     this.uploadCallback = (data, status) => {
-      this.fileUploadCallback(data, status);
-    };
+        this.loading.unsubscribe();
+        this.fileUploadCallback(data, status);
+      };
 
-    this.onFileUpload = () => {
-      this.clearError();
-      this.isFileUploading = true;
-      this.multipartItem.formData.append('file', this.trainingFile);
+      this.onFileUpload = () => {
+        this.loading = EmitterUtil.get(constants.events.showLoader).subscribe(() => {
+        });
+        this.clearError();
+        this.isFileUploading = true;
+        this.multipartItem.formData.append('file', this.trainingFile);
 
-      this.multipartItem.callback = this.uploadCallback;
-      this.multipartItem.upload();
+        this.multipartItem.callback = this.uploadCallback;
+        this.multipartItem.upload();
     };
   }
 

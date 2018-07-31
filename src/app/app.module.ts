@@ -14,13 +14,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { InterceptedHttp } from './shared/interceptors/http.interceptor';
+import { BusyConfig, NgBusyModule } from 'ng-busy';
+import {BusyComponent} from './shared/components/busy.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ClassifyComponent,
     TrainAndUploadComponent,
-    IsValidPipe
+    IsValidPipe,
+    BusyComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +33,14 @@ import { InterceptedHttp } from './shared/interceptors/http.interceptor';
     ReactiveFormsModule,
     MatInputModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgBusyModule.forRoot(<BusyConfig>{
+      message: 'Loading...',
+      backdrop: true,
+      template: BusyComponent,
+      wrapperClass: 'ng-busy',
+      delay: 0
+    })
   ],
   providers: [
     TrainAndClassify,
@@ -40,6 +50,7 @@ import { InterceptedHttp } from './shared/interceptors/http.interceptor';
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [BusyComponent]
 })
 export class AppModule { }
