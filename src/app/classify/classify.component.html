@@ -1,12 +1,13 @@
 <div class="container" [ngBusy]="loading">
   <div class="row mt-5">
     <div class="col-8 separator pt-5">
-      <div class="row mb-4" *ngFor="let entity of entitiesForDisplay; let e = index">
-        <div class="col-12">
-          <!-- <div class="d-flex justify-content-start">
-            <div *ngFor="let part of entity.parts">{{part.text}}</div>
-          </div> -->
-          <span *ngFor="let part of entity.parts; let p = index">
+      <div *ngIf="isClassified">
+        <div class="row mb-4" *ngFor="let entity of entitiesForDisplay; let e = index">
+          <div class="col-12">
+            <!-- <div class="d-flex justify-content-start">
+              <div *ngFor="let part of entity.parts">{{part.text}}</div>
+            </div> -->
+            <span *ngFor="let part of entity.parts; let p = index">
             <span *ngIf="part.type !== 'plain'" class="entity p-3">{{part.text}}
               <span class="p-1">{{part.type}}
                 <i class="fa fa-times cross p-1" (click)="removeEntity(e,p)"></i>
@@ -14,7 +15,13 @@
               </span>
             </span>
             <span *ngIf="part.type === 'plain'" (mouseup)="captureHighlightedText(e,p)">{{part.text}}</span></span>
+          </div>
         </div>
+      </div>
+      <div *ngIf="!isClassified">
+        <h2 class="row mt-5 ml-3">
+          Please upload a file for Entity Extraction.
+        </h2>
       </div>
     </div>
     <div class="col-4 pt-3 pl-4">

@@ -29,64 +29,8 @@ export class ClassifyComponent implements OnInit {
   uploader: MultipartUploader;
   multipartItem: MultipartItem;
 
-  entitiesFromModel = [
-    {
-      'sentence': 'Barack Obama is the president of USA.',
-      'entities': [
-        {
-          'entity_text': 'Barack Obama',
-          'entity_start': 0,
-          'entity_end': 12,
-          'entity_type': 'PERSON'
-        },
-        {
-          'entity_text': 'USA',
-          'entity_start': 33,
-          'entity_end': 36,
-          'entity_type': 'LOCATION'
-        }
-      ]
-    },
-    {
-      'sentence': 'I live in Islamabad.',
-      'entities': [
-        {
-          'entity_text': 'Islamabad',
-          'entity_start': 10,
-          'entity_end': 19,
-          'entity_type': 'LOCATION'
-        }
-      ]
-    },
-    {
-      'sentence': 'The movie was awesome!',
-      'entities': []
-    },
-    {
-      'sentence': 'It\'s so hot in Lahore! On top of that, I\'m wearing a black shirt, and at around 12 pm, I was burning.',
-      'entities': [
-        {
-          'entity_text': 'Lahore',
-          'entity_start': 15,
-          'entity_end': 21,
-          'entity_type': 'LOCATION'
-        },
-        {
-          'entity_text': 'black',
-          'entity_start': 53,
-          'entity_end': 58,
-          'entity_type': 'COLOR'
-        },
-        {
-          'entity_text': '12 pm',
-          'entity_start': 80,
-          'entity_end': 85,
-          'entity_type': 'TIME'
-        }
-      ]
-    }
-  ];
-
+  isClassified: boolean = false;
+  entitiesFromModel;
   trainForm: FormGroup;
   entitiesForDisplay = [];
   entitiesToUpdate = [];
@@ -122,7 +66,6 @@ export class ClassifyComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.reconstructEntitiesForDisplay();
   }
 
   initForm () {
@@ -140,6 +83,7 @@ export class ClassifyComponent implements OnInit {
     if (!AppUtils.isUndefinedOrNull(fileData) && !AppUtils.isUndefinedOrNull(fileData)) {
       this.trainingFile = null;
       this.entitiesFromModel = fileData;
+      this.isClassified = true;
       this.reconstructEntitiesForDisplay();
     } else {
      this.error = 'Fail to upload';
