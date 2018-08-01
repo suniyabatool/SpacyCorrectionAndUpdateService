@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="train-and-update-btn">
-        <button class="btn btn-primary btn-block mb-3" (click)="update()" disabled="!isClassified">UPDATE MODEL</button>
+        <button class="btn btn-primary btn-block mb-3" (click)="update()" [disabled]="!isClassified">UPDATE MODEL</button>
       </div>
       <div class="train">
         <div class="train-heading">TRAIN</div>
@@ -65,7 +65,7 @@
             </div>
 
             <div class="form-group pb-3 text-center">
-              <button class="btn btn-primary correct-btn" type="submit" disabled="!isClassified">CORRECT</button>
+              <button class="btn btn-primary correct-btn" type="submit" [disabled]="!isClassified">CORRECT</button>
             </div>
           </div>
         </form>
